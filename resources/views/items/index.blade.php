@@ -21,7 +21,7 @@
                     </form>
                 </div>
                 <div class="card-header"><h1>Pets</h1></div>
-                <div class="card-body">
+                <div class="card-body" id="pets">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -31,7 +31,7 @@
                                 <th>found time</th>
                                 <th>description</th>
                                 @auth
-                                <th colspan="2">Actions</th>
+                                <th colspan="3">Actions</th>
                                 @endauth
                             </tr>
                         </thead>
@@ -46,6 +46,9 @@
                                 <td>{{$item['description']}}</td>
                                 @auth
                                 <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn">Details</a></td>
+                                @if(Gate::allows('isAdmin'))
+                                <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
+                                @endif
                                 <td><a href="{{ url('requests/create/'. $item['id']) }}" class="btn
                                 btn-primary">Request</a></td>
                                 @endauth
@@ -82,6 +85,9 @@
                                 @auth
                                 <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
                                 btn- primary">Details</a></td>
+                                @if(Gate::allows('isAdmin'))
+                                <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
+                                @endif
                                 <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
                                 btn- warning">Request</a></td>
                                 @endauth
@@ -118,6 +124,9 @@
                                 @auth
                                 <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
                                 btn- primary">Details</a></td>
+                                @if(Gate::allows('isAdmin'))
+                                <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
+                                @endif
                                 <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
                                 btn- warning">Request</a></td>
                                 @endauth

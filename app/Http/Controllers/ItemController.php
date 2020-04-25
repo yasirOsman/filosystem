@@ -114,7 +114,8 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Item::find($id);
+        return view('items.edit',compact('item'));
     }
 
     /**
@@ -126,7 +127,52 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // form validation
+        $item = Item::find($id);
+        
+        $this->validate(request(), [
+            'name'=> 'required',
+            'color' => 'required',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:500',
+            'found_time'=> 'required|date_format:Y-m-d H:i'
+            ]);
+            
+            $images=array();
+            //Handles the uploading of the image
+            if ($files=$request->file('images')){
+            //Gets the filename with the extension
+            
+            foreach($files as $file){
+                $fileNameWithExt = $file->getClientOriginalName();
+                //just gets the filename
+                $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                //Just gets the extension
+                $extension = $file->getClientOriginalExtension();
+                //Gets the filename to store
+                $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                //Uploads the image
+                $path =$file->storeAs('public/images', $fileNameToStore);
+                $images[]= $fileNameToStore;
+            }
+            $image = implode("|", $images);
+            }
+            else {
+            $image = 'noimage.jpg';
+            }
+            
+            $item->color = $request->input('color');
+            $item->name = $request->input('name');
+            $item->description = $request->input('description');
+            $item->place_found = $request->input('place_found');
+            $item->found_time= $request->input('found_time');
+            $item->user_found = auth()->user()->id;
+            $item->category = $request->input('category');
+            $item->created_at = now();
+            $item->image = $image;
+            // save the Item obj
+            $item->save();
+            // generate a redirect and success message
+            return back()->with('success', 'Item has been updated');
     }
 
     /**

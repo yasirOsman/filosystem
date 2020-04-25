@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::group(['middleware' => 'is.admin'], function () {
         Route::get('/requests', 'RequestController@index')->name('requests.index');
         Route::delete('/requests/{request}', 'RequestController@destroy')->name('requests.destroy');
+        Route::get('items/{item}/edit','ItemController@edit')->name('items.edit');
+        Route::put('items/{item}','ItemController@update')->name('items.update');
     });
 });
 
