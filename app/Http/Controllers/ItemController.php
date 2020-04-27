@@ -153,6 +153,7 @@ class ItemController extends Controller
                 //Uploads the image
                 $path =$file->storeAs('public/images', $fileNameToStore);
                 $images[]= $fileNameToStore;
+                Storage::disk('s3')->put($path, file_get_contents($file));
             }
             $image = implode("|", $images);
             }
