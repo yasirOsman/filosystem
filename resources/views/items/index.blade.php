@@ -129,6 +129,13 @@
                                 @endif
                                 <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
                                 btn- warning">Request</a></td>
+                                <td>
+                                    <form action="{{action('ItemController@destroy', $item['id'])}}"
+                                    method="post"> @csrf
+                                        <input name="_method" type="hidden" value="DELETE">
+                                        <button class="btn btn-danger" type="submit"> Delete</button>
+                                    </form>
+                                </td>
                                 @endauth
                             </tr>
                             @endif
