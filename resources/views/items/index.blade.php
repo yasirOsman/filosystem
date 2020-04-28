@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8 ">
+        <div class="col-md-10 ">
             <div class="card" >
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                 Sort By<span class="caret"></span>
@@ -10,13 +10,13 @@
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">
                     <form>
                         @csrf
-                        <input type="submit" class="dropdown-item" value="time found ascending"/>
+                        <input type="submit" class="dropdown-item" value="Time found (asc)"/>
                         <input type="hidden" name="sort" value="1"/>        
                     </form>
 
                     <form>
                         @csrf
-                        <input type="submit" class="dropdown-item" value="time found descending"/>
+                        <input type="submit" class="dropdown-item" value="Time found (desc)"/>
                         <input type="hidden" name="sort" value="2"/>        
                     </form>
                 </div>
@@ -31,7 +31,11 @@
                                 <th>found time</th>
                                 <th>description</th>
                                 @auth
-                                <th colspan="3">Actions</th>
+                                    @if(Gate::allows('isAdmin'))
+                                        <th colspan="4">Actions</th>
+                                    @else
+                                        <th colspan="2">Actions</th>
+                                    @endif
                                 @endauth
                             </tr>
                         </thead>
@@ -45,12 +49,19 @@
                                 <td>{{$item['found_time']}}</td>
                                 <td>{{$item['description']}}</td>
                                 @auth
-                                <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn">Details</a></td>
-                                @if(Gate::allows('isAdmin'))
-                                <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
-                                @endif
-                                <td><a href="{{ url('requests/create/'. $item['id']) }}" class="btn
-                                btn-primary">Request</a></td>
+                                    <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn">Details</a></td>
+                                    @if(Gate::allows('isAdmin'))
+                                        <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
+                                        <td>
+                                            <form action="{{action('ItemController@destroy', $item['id'])}}"
+                                            method="post"> @csrf
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button class="btn btn-danger" type="submit"> Delete</button>
+                                            </form>
+                                        </td>
+                                    @endif
+                                    <td><a href="{{ url('requests/create/'. $item['id']) }}" class="btn
+                                    btn-primary">Request</a></td>
                                 @endauth
                             </tr>
                             @endif
@@ -69,7 +80,11 @@
                                 <th>found time</th>
                                 <th>description</th>
                                 @auth
-                                <th colspan="2">Actions</th>
+                                    @if(Gate::allows('isAdmin'))
+                                        <th colspan="4">Actions</th>
+                                    @else
+                                        <th colspan="2">Actions</th>
+                                    @endif
                                 @endauth
                             </tr>
                         </thead>
@@ -83,13 +98,20 @@
                                 <td>{{$item['found_time']}}</td>
                                 <td>{{$item['description']}}</td>
                                 @auth
-                                <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
-                                btn- primary">Details</a></td>
-                                @if(Gate::allows('isAdmin'))
-                                <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
-                                @endif
-                                <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
-                                btn- warning">Request</a></td>
+                                    <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
+                                    btn- primary">Details</a></td>
+                                    @if(Gate::allows('isAdmin'))
+                                        <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
+                                        <td>
+                                            <form action="{{action('ItemController@destroy', $item['id'])}}"
+                                            method="post"> @csrf
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button class="btn btn-danger" type="submit"> Delete</button>
+                                            </form>
+                                        </td>
+                                    @endif
+                                    <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
+                                    btn- warning">Request</a></td>
                                 @endauth
                             </tr>
                             @endif
@@ -108,7 +130,11 @@
                                 <th>found time</th>
                                 <th>description</th>
                                 @auth
-                                <th colspan="2">Actions</th>
+                                    @if(Gate::allows('isAdmin'))
+                                        <th colspan="4">Actions</th>
+                                    @else
+                                        <th colspan="2">Actions</th>
+                                    @endif
                                 @endauth
                             </tr>
                         </thead>
@@ -122,20 +148,20 @@
                                 <td>{{$item['found_time']}}</td>
                                 <td>{{$item['description']}}</td>
                                 @auth
-                                <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
-                                btn- primary">Details</a></td>
-                                @if(Gate::allows('isAdmin'))
-                                <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
-                                @endif
-                                <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
-                                btn- warning">Request</a></td>
-                                <td>
-                                    <form action="{{action('ItemController@destroy', $item['id'])}}"
-                                    method="post"> @csrf
-                                        <input name="_method" type="hidden" value="DELETE">
-                                        <button class="btn btn-danger" type="submit"> Delete</button>
-                                    </form>
-                                </td>
+                                    <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
+                                    btn- primary">Details</a></td>
+                                    @if(Gate::allows('isAdmin'))
+                                        <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
+                                        <td>
+                                            <form action="{{action('ItemController@destroy', $item['id'])}}"
+                                            method="post"> @csrf
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button class="btn btn-danger" type="submit"> Delete</button>
+                                            </form>
+                                        </td>
+                                    @endif
+                                    <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
+                                    btn- warning">Request</a></td>
                                 @endauth
                             </tr>
                             @endif

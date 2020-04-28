@@ -194,6 +194,11 @@ class ItemController extends Controller
     public function destroy($id)
     {
         $item = Item::find($id);
+
+        $images = explode('|', $item->image);
+        foreach($images as $image){
+            Storage::disk('s3')->delete('images/' . $image);
+        }
         $item->delete();
         return redirect('requests')->with('success','Request has been approved!');
     }
