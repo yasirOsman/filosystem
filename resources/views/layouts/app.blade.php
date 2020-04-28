@@ -18,7 +18,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    @yield('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
 </head>
@@ -38,10 +37,10 @@
                     <ul class="navbar-nav mr-auto">
                         @auth
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('items') }}">Items </a>
+                                <a class="nav-link" href="{{ url('items') }}">View items </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('items/create') }}">Add Item </a>
+                                <a class="nav-link" href="{{ url('items/create') }}">Add an Item </a>
                             </li>
                             @if(Gate::allows('isAdmin'))
                             <li class="nav-item">
@@ -91,6 +90,5 @@
             @yield('content')
         </main>
     </div>
-    @yield('scripts')
 </body>
 </html>

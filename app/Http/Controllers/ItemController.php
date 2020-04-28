@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use App\Item;
 use Illuminate\Http\Request;
 
@@ -67,8 +68,9 @@ class ItemController extends Controller
                 //Gets the filename to store
                 $fileNameToStore = $filename.'_'.time().'.'.$extension;
                 //Uploads the image
-                $path =$file->storeAs('public/images', $fileNameToStore);
+                $path = 'images/' . $fileNameToStore;
                 $images[]= $fileNameToStore;
+                Storage::disk('s3')->put($path, file_get_contents($file));
             }
             $image = implode("|", $images);
             }
@@ -102,7 +104,17 @@ class ItemController extends Controller
     public function show($id)
     {
         $item = Item::find($id);
-        $images = explode('|', $item->image);
+        $imageList = explode('|', $item->image);
+        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/images/';
+        $files;
+        foreach($imageList as $image){
+            $images[] = $url . $image;
+            // $images[] = $url . $file;
+        }
+
+        // foreach($files as $file){
+        //     $images[] = $url . $file;
+        // }
         return view('items.show',compact(['item','images']));
     }
 
@@ -141,7 +153,6 @@ class ItemController extends Controller
             //Handles the uploading of the image
             if ($files=$request->file('images')){
             //Gets the filename with the extension
-            
             foreach($files as $file){
                 $fileNameWithExt = $file->getClientOriginalName();
                 //just gets the filename
@@ -151,14 +162,13 @@ class ItemController extends Controller
                 //Gets the filename to store
                 $fileNameToStore = $filename.'_'.time().'.'.$extension;
                 //Uploads the image
-                $path =$file->storeAs('public/images', $fileNameToStore);
+                // $path =$file->storeAs('public/images', $fileNameToStore);
+                $path = 'images/' . $fileNameToStore;
                 $images[]= $fileNameToStore;
-                Storage::disk('s3')->put($path, file_get_contents($file));
+                Storage::disk('s3')->put($path, $file, 'public');
             }
             $image = implode("|", $images);
-            }
-            else {
-            $image = 'noimage.jpg';
+            $item->image = $image;
             }
             
             $item->color = $request->input('color');
@@ -169,7 +179,6 @@ class ItemController extends Controller
             $item->user_found = auth()->user()->id;
             $item->category = $request->input('category');
             $item->created_at = now();
-            $item->image = $image;
             // save the Item obj
             $item->save();
             // generate a redirect and success message
