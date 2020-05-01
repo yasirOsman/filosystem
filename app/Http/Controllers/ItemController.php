@@ -146,7 +146,7 @@ class ItemController extends Controller
             'name'=> 'required',
             'color' => 'required',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:500',
-            'found_time'=> 'required|date_format:Y-m-d H:i'
+            'found_time'=> 'required|date_format:Y-m-d H:i:s'
             ]);
             
             $images=array();
@@ -191,7 +191,7 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         $item = Item::find($id);
 
@@ -200,6 +200,11 @@ class ItemController extends Controller
             Storage::disk('s3')->delete('images/' . $image);
         }
         $item->delete();
+        $page = $request->input('page');
+        if($page == 1){
         return redirect('requests')->with('success','Request has been approved!');
+        }
+
+        return redirect('items')->with('success','Item has been deleted!');
     }
 }

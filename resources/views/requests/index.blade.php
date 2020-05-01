@@ -26,6 +26,7 @@
                                     <form action="{{action('ItemController@destroy', $request['item_id'])}}"
                                     method="post"> @csrf
                                     <input name="_method" type="hidden" value="DELETE">
+                                    <input name="page" type="hidden" value="1">
                                     <button class="btn btn-success" type="submit">Approve</button>
                                     </form>
                                 </td>

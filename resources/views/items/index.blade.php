@@ -4,9 +4,11 @@
     <div class="row justify-content-center">
         <div class="col-md-10 ">
             <div class="card" >
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                Sort By<span class="caret"></span>
+                <div class="card-text">
+                <a id="dropdownMenuButton" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                Sort By
                 </a>
+                
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">
                     <form>
                         @csrf
@@ -19,6 +21,7 @@
                         <input type="submit" class="dropdown-item" value="Time found (desc)"/>
                         <input type="hidden" name="sort" value="2"/>        
                     </form>
+                </div>
                 </div>
                 <div class="card-header"><h1>Pets</h1></div>
                 <div class="card-body" id="pets">
@@ -56,11 +59,12 @@
                                             <form action="{{action('ItemController@destroy', $item['id'])}}"
                                             method="post"> @csrf
                                                 <input name="_method" type="hidden" value="DELETE">
+                                                <input name="page" type="hidden" value="0">
                                                 <button class="btn btn-danger" type="submit"> Delete</button>
                                             </form>
                                         </td>
                                     @endif
-                                    <td><a href="{{ url('requests/create/'. $item['id']) }}" class="btn
+                                    <td><a href="{{ action('RequestController@create', $item['id']) }}" class="btn
                                     btn-primary">Request</a></td>
                                 @endauth
                             </tr>
