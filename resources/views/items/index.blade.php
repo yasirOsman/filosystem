@@ -103,7 +103,7 @@
                                 <td>{{$item['description']}}</td>
                                 @auth
                                     <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
-                                    btn- primary">Details</a></td>
+                                    btn">Details</a></td>
                                     @if(Gate::allows('isAdmin'))
                                         <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
                                         <td>
@@ -115,7 +115,7 @@
                                         </td>
                                     @endif
                                     <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
-                                    btn- warning">Request</a></td>
+                                    btn-primary">Request</a></td>
                                 @endauth
                             </tr>
                             @endif
@@ -153,7 +153,7 @@
                                 <td>{{$item['description']}}</td>
                                 @auth
                                     <td><a href="{{action('ItemController@show', $item['id'])}}" class="btn
-                                    btn- primary">Details</a></td>
+                                    ">Details</a></td>
                                     @if(Gate::allows('isAdmin'))
                                         <td><a href="{{action('ItemController@edit', $item['id'])}}" class="btn">Edit</a></td>
                                         <td>
@@ -165,7 +165,7 @@
                                         </td>
                                     @endif
                                     <td><a href="{{ url('requests/create/'.$item['id']) }}" class="btn
-                                    btn- warning">Request</a></td>
+                                    btn-primary">Request</a></td>
                                 @endauth
                             </tr>
                             @endif
