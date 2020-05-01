@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Storage;
 use App\Item;
+use App\User;
+use App\Requests;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApproveEmail;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -192,19 +196,24 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, Request $request)
-    {
-        $item = Item::find($id);
-
+    {   
+        $theRequest = Requests::find($id);
+        $user = User::find($theRequest->user_id);
+        $item = Item::find($theRequest->item_id);
+        $page = $request->input('page');
         $images = explode('|', $item->image);
+        
         foreach($images as $image){
             Storage::disk('s3')->delete('images/' . $image);
         }
-        $item->delete();
-        $page = $request->input('page');
+        
         if($page == 1){
-        return redirect('requests')->with('success','Request has been approved!');
+            Mail::to($user->email)->send(new ApproveEmail($item,$user));
+            $item->delete();
+            return redirect('requests')->with('success','Request has been approved and item has been deleted!');
         }
 
+        $item->delete();
         return redirect('items')->with('success','Item has been deleted!');
     }
 }

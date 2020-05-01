@@ -23,7 +23,7 @@
                                 <td>{{$request['user_id']}}</td>
                                 <td><a href="{{action('ItemController@show', $request['item_id'])}}" class="btn">View item details</a></td>
                                 <td>
-                                    <form action="{{action('ItemController@destroy', $request['item_id'])}}"
+                                    <form action="{{action('ItemController@destroy', $request['id'])}}"
                                     method="post"> @csrf
                                     <input name="_method" type="hidden" value="DELETE">
                                     <input name="page" type="hidden" value="1">

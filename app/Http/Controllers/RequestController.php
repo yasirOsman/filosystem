@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DenyEmail;
+use App\Item;
+use App\User;
 
 class RequestController extends Controller
 {
@@ -94,6 +98,9 @@ class RequestController extends Controller
     public function destroy($id)
     {
         $request = Requests::find($id);
+        $item = Item::find($request->item_id);
+        $user = User::find($request->user_id);
+        Mail::to($user->email)->send(new DenyEmail($item,$user));
         $request->delete();
         return redirect('requests')->with('success','Request has been denied');
     }
