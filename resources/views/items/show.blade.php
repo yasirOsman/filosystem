@@ -7,13 +7,13 @@
             <div class="card">
                 <div class="card-header">Details</div>
                 <div class="card-body">
-                    <table class="table table-striped" border="1" >
+                    <table class="table table-striped" border="2" >
                         <tr> <td> <b>Item name </th> <td> {{$item['name']}}</td></tr>
                         <tr> <th>Item type </th> <td>{{$item->category}}</td></tr>
                         <tr> <th>Item color </th> <td>{{$item->color}}</td></tr>
-                        <tr> <td>Place found </th> <td>{{$item->place_found}}</td></tr>
-                        <tr> <td>found user </th> <td>{{$item->user_found}}</td></tr>
-                        <tr> <td>Time found </th> <td>{{$item->found_time}}</td></tr>
+                        <tr> <td><b>Place found </th> <td>{{$item->place_found}}</td></tr>
+                        <tr> <td><b>found user </th> <td>{{$item->user_found}}</td></tr>
+                        <tr> <td><b>Date and time found </th> <td>{{$item->found_time}}</td></tr>
                         <tr> <th>Notes </th> <td style="max-width:150px;" >{{$item->description}}</td></tr>
                     </table>
                     <table>
@@ -47,7 +47,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 @endsection

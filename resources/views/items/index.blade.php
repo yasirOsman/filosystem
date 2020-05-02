@@ -38,7 +38,7 @@
                                 <th>name</th>
                                 <th>category</th>
                                 <th>color</th>
-                                <th>found time</th>
+                                <th>Date and time found</th>
                                 @auth
                                     @if(Gate::allows('isAdmin'))
                                         <th colspan="4">Actions</th>

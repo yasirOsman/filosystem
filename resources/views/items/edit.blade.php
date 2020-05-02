@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10 ">
+        <div class="col-md-12 ">
             <div class="card">
                 <div class="card-header">Edit and update the Item</div>
                     <!-- display the errors -->
@@ -28,12 +28,12 @@
                     @csrf
                     <div class="col-md-8">
                         <label >Item name</label>
-                        <input type="text" style="width: 200px;" name="name" value="{{$item['name']}}"
+                        <input class="form-control" type="text" style="width: 300px;" name="name" value="{{$item['name']}}"
                         placeholder="Item name" />
                     </div>
                     <div class="col-md-8">
                         <label>Item category</label>
-                        <select name="category" >
+                        <select class="form-control" style="width: 300px;" name="category">
                             <option value="pet">Pet</option>
                             <option value="phone">Phone</option>
                             <option value="jewellery">Jewellery</option>
@@ -41,22 +41,22 @@
                     </div>
                     <div class="col-md-8">
                         <label >Item color</label>
-                        <input type="text" style="width: 200px;" name="color"
+                        <input class="form-control" type="text" style="width: 300px;" name="color"
                         placeholder="item color" value="{{$item['color']}}"/>
                     </div>
                     <div class="col-md-8">
                         <label >Place found</label>
-                        <input type="text" style="width: 200px;" name="place_found"
+                        <input class="form-control" type="text" style="width: 300px;" name="place_found"
                         placeholder="place found" value="{{$item['place_found']}}"/>
                     </div>
                     <div class="col-md-8">
-                        <label >Time found</label>
-                        <input type="text" style="width: 200px;" name="found_time"
+                        <label >Date and time found</label>
+                        <input class="form-control" type="text" style="width: 300px;" name="found_time"
                         placeholder="in 'YYYY-MM-DD hh:mm' format" value="{{$item['found_time']}}"/>
                     </div>
                     <div class="col-md-8">
-                        <label >Description</label>
-                        <textarea rows="4" cols="50" name="description" placeholder="any other details of the found item" >
+                        <label >Notes</label>
+                        <textarea class="form-control" rows="4" cols="50" name="description" placeholder="any other details of the found item" >
                             {{$item['description']}}
                         </textarea>
                     </div>
