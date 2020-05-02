@@ -27,6 +27,9 @@ class ItemController extends Controller
         }else if($sort == 2){
             $items = collect($itemList)->sortByDesc('found_time')->all();
             return view('items.index', compact('items'));
+        }else if ($sort == 3){
+            $items = collect($itemList)->sortBy('category')->all();
+            return view('items.index', compact('items'));
         }
         $items = $itemList;
         return view('items.index', compact('items'));
@@ -113,12 +116,8 @@ class ItemController extends Controller
         $files;
         foreach($imageList as $image){
             $images[] = $url . $image;
-            // $images[] = $url . $file;
         }
 
-        // foreach($files as $file){
-        //     $images[] = $url . $file;
-        // }
         return view('items.show',compact(['item','images']));
     }
 
@@ -195,24 +194,34 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, Request $request)
+    public function destroy(Request $request, $id)
     {   
-        $theRequest = Requests::find($id);
-        $user = User::find($theRequest->user_id);
-        $item = Item::find($theRequest->item_id);
         $page = $request->input('page');
+        
+        if($page == 1){
+            $theRequest = Requests::find($id);
+            $item = Item::find($theRequest->item_id);
+            $user = User::find($theRequest->user_id);
+
+            $images = explode('|', $item->image);
+        
+            foreach($images as $image){
+            Storage::disk('s3')->delete('images/' . $image);
+            }
+
+            Mail::to($user->email)->send(new ApproveEmail($item,$user));
+            $item->delete();
+            return redirect('requests')->with('success','Request has been approved and item has been deleted!');
+        }
+        
+        
+        $item = Item::find($id);
         $images = explode('|', $item->image);
         
         foreach($images as $image){
             Storage::disk('s3')->delete('images/' . $image);
         }
         
-        if($page == 1){
-            Mail::to($user->email)->send(new ApproveEmail($item,$user));
-            $item->delete();
-            return redirect('requests')->with('success','Request has been approved and item has been deleted!');
-        }
-
         $item->delete();
         return redirect('items')->with('success','Item has been deleted!');
     }
