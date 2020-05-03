@@ -113,7 +113,7 @@ class ItemController extends Controller
         $item = Item::find($id);
         $imageList = explode('|', $item->image);
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/images/';
-        $files;
+
         foreach($imageList as $image){
             $images[] = $url . $image;
         }
@@ -213,7 +213,6 @@ class ItemController extends Controller
             $item->delete();
             return redirect('requests')->with('success','Request has been approved and item has been deleted!');
         }
-        
         
         $item = Item::find($id);
         $images = explode('|', $item->image);
