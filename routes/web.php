@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/items', 'ItemController@index')->name('items.index');
 
+//these routes are only accessible to authenticated users
 Route::group(['middleware' => ['auth']], function() {
     Route::post('/items', 'ItemController@store')->name('items.store');
     Route::get('/items/create', 'ItemController@create')->name('items.create');
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/requests/create/{id}', 'RequestController@create')->name('requests.create');
     Route::post('/requests', 'RequestController@store')->name('requests.store');
 
+    //these routes are only accessible to authenticated admins
     Route::group(['middleware' => 'is.admin'], function () {
         Route::get('/requests', 'RequestController@index')->name('requests.index');
         Route::delete('/requests/{request}', 'RequestController@destroy')->name('requests.destroy');

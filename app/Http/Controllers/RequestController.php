@@ -41,6 +41,7 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
+        //form validation
         $userRequest = $this->validate(request(), [
             'reason' => 'required'
         ]);
